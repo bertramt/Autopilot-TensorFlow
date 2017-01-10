@@ -2,8 +2,14 @@ import os
 import tensorflow as tf
 import driving_data
 import model
+from datetime import datetime
 
 LOGDIR = './save'
+
+# log start time
+startTime = datetime.now()
+with open("trainrun.log", "a") as myfile:
+    myfile.write("START " + str(startTime) + "\n")
 
 sess = tf.InteractiveSession()
 
@@ -49,6 +55,12 @@ for epoch in range(epochs):
       checkpoint_path = os.path.join(LOGDIR, "model.ckpt")
       filename = saver.save(sess, checkpoint_path)
   print("Model saved in file: %s" % filename)
+
+# print and log end time
+print(datetime.now() - startTime)
+runTime = (datetime.now() - startTime)
+with open("trainrun.log", "a") as myfile:
+        myfile.write("STOP  " + str(datetime.now()) + " " + str(runTime) + "\n")
 
 print("Run the command line:\n" \
           "--> tensorboard --logdir=./logs " \
